@@ -21,11 +21,11 @@ window.addEventListener('load', () => {
     }
 })
 
-// login ou logout
 loginLogout.addEventListener('click', (event) => {
     if (loginLogout.textContent == 'logout') {
-        event.preventDefault();
+        // loginLogout.href == "/views/index.html"
         limparConteudo();
+        clearMovies();
         return;
     }
 })
@@ -58,7 +58,7 @@ function clearMovies() {
 
 async function loadMovies() {
     try {
-        let response = await fetch(`${API_URL}/filmes`)
+        let response = await fetch(`${API_URL}/user/${user.user_id}/filmes`)
         movies = await response.json()
         console.log(movies)
         displayMovies(movies)
@@ -78,24 +78,10 @@ function displayMovies(movies) {
               <p><span>${movie.titulo}</span> <span>Likes ${movie.likes}</span></p>
               <p>${movie.descricao}</p>
               <div class="box-footer">
-                <button id="add-to-list" onclick="adicionarNaLista(${movie.filme_id})">Adicionar à lista</button>
                 <button id="like" onclick="curtir(${movie.filme_id})">Curtir</button>
               </div>
             </div>`
         moviesDiv.appendChild(box);
-    })
-}
-
-function adicionarNaLista(filme_id) {
-    return fetch(`${API_URL}/user/${user.user_id}/filmes/favorite`, {
-        method: 'PUT',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            filme_id
-        })
     })
 }
 

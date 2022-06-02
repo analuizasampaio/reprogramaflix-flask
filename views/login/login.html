@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Inserir Usuário</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+  <link href="./style.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <nav>
+    <a href="/views/index.html">voltar</a>
+  </nav>
+  <h1>Login</h1>
+
+  <div id="message"></div>
+  
+  <div class="container">
+    <form class="form" method="post">
+      <label for="email">E-mail</label>
+      <input type="email" name="email" id="email" />
+      
+      <label for="senha">Senha</label>
+      <input type="password" name="senha" id="senha" />
+      
+      <button id="send_form" type="button">Login</button>
+      
+      <span>Não tem uma conta? <a href="/views/cadastro/cadastro.html">Cadastre-se</a></span>
+    </form>
+  </div>
+  
+  <script src="./script.js"></script>
+</body>
+
+</html>

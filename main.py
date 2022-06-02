@@ -41,7 +41,12 @@ def get_filmes():
 @app.route("/filmes/<id>", methods=["GET"])
 def get_filme_by_id(id):
     filmes = controller.get_filme_by_id(id)
-    return jsonify(filmes)
+    if filmes == []:
+            return Response(f'Não foi encontrado filmes', status=404, mimetype='application/json')
+    else:
+
+        return Response(json.dumps(filmes), status=201, mimetype='application/json')
+
 
 @app.route("/filmes/search", methods=["GET"])
 def get_filme_by_titulo():
@@ -69,7 +74,31 @@ def descurtir(id):
 def insert_user():
     body = request.get_json()
     user = controller.insert_user(body)
-    return jsonify(user)
+    if user == None:
+        return Response(f'não foi possivel cadastrar usuario', status=500, mimetype='application/json')
+    else:
+        result = {"mensagem": f'Usuário {user["nome"]} criado com sucesso',
+                             "data": user}
+        return Response(json.dumps(result), status=201, mimetype='application/json')
+
+@app.route("/user/all", methods=["GET"])
+def get_all_users():
+    users = controller.get_all_users()
+    if users == []:
+        return Response(f'Não foi encontrados usuário', status=404, mimetype='application/json')
+    else:
+
+        return Response(json.dumps(users), status=201, mimetype='application/json')
+
+
+@app.route("/user/<id>", methods=["GET"])
+def get_user_by_id(id):
+    users = controller.get_user_by_id(id)
+    if users == None:
+            return Response(f'Não existe usuário id {id}', status=404, mimetype='application/json')
+    else:
+
+        return Response(json.dumps(users), status=201, mimetype='application/json')
 
 @app.route("/user/login", methods=["POST"])
 def login():

@@ -125,8 +125,9 @@ def insert_user(user):
     
     cursor.execute(f"SELECT * FROM user WHERE nome='{nome}'")
     criado = (cursor.fetchone()) 
+    
              
-    return criado
+    return get_user_by_id(criado[0])
 
 def get_user_by_id(id):
     conn = get_db()
@@ -136,13 +137,37 @@ def get_user_by_id(id):
     cursor.execute(statement, [id])
     row = cursor.fetchone()
     
-    user = {}
-    user['user_id'] =row['user_id']
-    user['nome'] =row['nome']
-    user['email'] =row['email']
-    user['senha'] =row['senha']
+    if row == None:
+        return row
+    else:
+    
+        user = {}
+        user['user_id'] =row['user_id']
+        user['nome'] =row['nome']
+        user['email'] =row['email']
+        user['senha'] =row['senha']
         
-    return user
+        return user
+
+def get_all_users():
+    users = []
+    conn = get_db()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    statement = "SELECT * FROM user "
+    cursor.execute(statement)
+    rows = cursor.fetchall()
+    
+    for i in rows:
+        
+        user = {}
+        user['user_id'] =i['user_id']
+        user['nome'] =i['nome']
+        user['email'] =i['email']
+        user['senha'] =i['senha']
+        users.append(user)
+    
+    return users
 
 def login(user):
     conn = get_db()
@@ -191,8 +216,15 @@ def favorite(filme, user_id):
 
     cursor.execute(query, (user_id, filme_id))
     conn.commit()
-             
-    return get_filmes_user(user_id)
+    
+    filmes = get_filmes_user(user_id)
+    
+    for i in filmes:
+        if i['filme_id'] == filme_id:
+            return i
+        else:
+            return None   
+
 
 def get_filmes_user(user_id):
     filmes = []
