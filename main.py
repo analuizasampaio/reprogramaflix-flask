@@ -65,6 +65,40 @@ def descurtir(id):
     filmes = controller.descurtir(id)
     return jsonify(filmes)
 
+@app.route("/user/cadastrar", methods=["POST"])
+def insert_user():
+    body = request.get_json()
+    user = controller.insert_user(body)
+    return jsonify(user)
+
+@app.route("/user/login", methods=["POST"])
+def login():
+    body = request.get_json()
+    user = controller.login(body)
+    return jsonify(user)
+
+@app.route("/user/<id>/logout", methods=["PUT"])
+def logout(id):
+    user = controller.logout(id)
+    return jsonify(user)
+
+@app.route("/user/<id>/filmes", methods=["GET"])
+def get_filmes_user(id):
+    filmes = controller.get_filmes_user(id)
+    return jsonify(filmes)
+
+@app.route("/user/<user_id>/filmes/favorite", methods=["PUT"])
+def favorite(user_id):
+    filme_id = request.get_json()
+    filmes = controller.favorite(filme_id, user_id)
+    return jsonify(filmes)
+
+@app.route("/user/<user_id>/filmes/unfavorite", methods=["PUT"])
+def unfavorite(user_id):
+    filme_id = request.get_json()
+    filmes = controller.unfavorite(filme_id, user_id)
+    return jsonify(filmes)
+
 if __name__ == "__main__":
     create_tables()
     app.run(port = 5000)
