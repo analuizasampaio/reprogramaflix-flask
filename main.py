@@ -35,13 +35,17 @@ def hello():
 @app.route("/filmes", methods=["GET"])
 def get_filmes():
     filmes = controller.get_all_filmes()
-    return jsonify(filmes)
+    if filmes == [] :
+            return Response(f'Não foi encontrado filmes', status=404, mimetype='application/json')
+    else:
+
+        return Response(json.dumps(filmes), status=201, mimetype='application/json')
 
 
 @app.route("/filmes/<id>", methods=["GET"])
 def get_filme_by_id(id):
     filmes = controller.get_filme_by_id(id)
-    if filmes == []:
+    if filmes == {} :
             return Response(f'Não foi encontrado filmes', status=404, mimetype='application/json')
     else:
 
@@ -84,7 +88,7 @@ def insert_user():
 @app.route("/user/all", methods=["GET"])
 def get_all_users():
     users = controller.get_all_users()
-    if users == []:
+    if users == None:
         return Response(f'Não foi encontrados usuário', status=404, mimetype='application/json')
     else:
 
@@ -94,7 +98,7 @@ def get_all_users():
 @app.route("/user/<id>", methods=["GET"])
 def get_user_by_id(id):
     users = controller.get_user_by_id(id)
-    if users == None:
+    if users == {} or users == None:
             return Response(f'Não existe usuário id {id}', status=404, mimetype='application/json')
     else:
 
@@ -127,6 +131,14 @@ def unfavorite(user_id):
     filme_id = request.get_json()
     filmes = controller.unfavorite(filme_id, user_id)
     return jsonify(filmes)
+
+@app.route('/reset', methods=["POST"])
+def reset():
+    controller.reset_database()
+    
+@app.route('/filmes/<id>', methods=["DELETE"])
+def delete_filme(id):
+    controller.delete_filme(id)
 
 if __name__ == "__main__":
     create_tables()

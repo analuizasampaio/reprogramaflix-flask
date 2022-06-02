@@ -9,6 +9,7 @@ def get_all_filmes():
     cursor.execute(f"SELECT * FROM filme ")
     rows = cursor.fetchall()
     
+    
     for i in rows:
         filme = {}
         filme['filme_id'] = i['filme_id']
@@ -27,14 +28,16 @@ def get_filme_by_id(id):
     statement = "SELECT * FROM filme WHERE filme_id = ?"
     cursor.execute(statement, [id])
     row = cursor.fetchone()
-    
     filme = {}
-    filme['filme_id'] =row['filme_id']
-    filme['titulo'] =row['titulo']
-    filme['descricao'] =row['descricao']
-    filme['imagem'] =row['imagem']
-    filme['likes'] =row['likes']
-        
+    if row != None:
+        filme['filme_id'] =row['filme_id']
+        filme['titulo'] =row['titulo']
+        filme['descricao'] =row['descricao']
+        filme['imagem'] =row['imagem']
+        filme['likes'] =row['likes']
+    
+    else:
+        filme = {}
     return filme
 
 def get_filme_by_titulo(titulo):
@@ -273,3 +276,24 @@ def unfavorite(filme, user_id):
     conn.commit()
              
     return get_filmes_user(user_id)
+
+def reset_database():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(f"DELETE FROM filme")
+    conn.commit()
+
+    cursor.execute(f"DELETE FROM user")
+    conn.commit()
+    
+    cursor.execute(f"DELETE FROM userFilmes")
+    conn.commit()
+    
+    return None
+
+def delete_filme(id):
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute(f"DELETE FROM filme WHERE filme_id = {id}")
+        conn.commit()
+        return {}
