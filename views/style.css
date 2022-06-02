@@ -79,5 +79,19 @@ p{
 }
 
 .box-divider{
-    margin-left: 30px;
+    margin: 0 30px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.box-divider > p {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+p.error-message {
+    display: none;
 }
